@@ -1,5 +1,29 @@
+//! Extract list of source files for Rust crate
+//!
+//! This crate will attempt to generate a list of source files for a given Rust
+//! crate. It does not compile the crate, and so does not require any of the
+//! crate's dependencies to be compiled.
+//!
+//! For example, this is useful for generating a list of source files as
+//! dependencies for a non-Cargo build system.
+//!
+//! There are a number of limitations with this:
+//! - Only works on Rust 2018 code (TODO: check 2021)
+//! - Will not file source files which are hidden by a macro or proc-macro
+//! - Will be confused by conditional includes
+//!
+//! There is some specific support for the `cfg_if` macro.
+//!
+//! ## Example
+//! ```rust
+//! let result = srcfiles::crate_srcfiles("test_projects/simple/src/main.rs").unwrap_err();
+//! let srcfiles = result.get_sources();
+//! let errors = result.into_errors();
+//! assert_eq!(srcfiles.len(), 7);
+//! ```
+
 mod common;
-pub mod error;
+mod error;
 mod mod_path;
 mod source_desc;
 mod visitor;
@@ -40,7 +64,7 @@ fn visit_source(
     ))
 }
 
-pub fn process_source(source: &SourceFileDesc) -> Result<(Vec<SourceFileDesc>, Vec<Error>), Error> {
+fn process_source(source: &SourceFileDesc) -> Result<(Vec<SourceFileDesc>, Vec<Error>), Error> {
     let source_finder = match &source.file_type {
         SourceFileType::Bytes | SourceFileType::String => return Ok((vec![], vec![])),
         SourceFileType::RustSnippet(mod_stack) => SourceFinder::new(mod_stack.clone()),
@@ -52,12 +76,18 @@ pub fn process_source(source: &SourceFileDesc) -> Result<(Vec<SourceFileDesc>, V
     Ok(visit_source(&source.path, source_finder)?)
 }
 
+/// Generate list of sources for a crate
+///
+/// Given a path to the top level module (typically `lib.rs`), return the list
+/// of source files (including the top-level module). If there are any errors it
+/// returns `Err`, but the caller can still extract any successfully determined
+/// files from this. If there are no errors it returns `Ok`.
 pub fn crate_srcfiles<P: Into<PathBuf>>(path: P) -> Result<Vec<SourceFileDesc>, SourcesAndErrors> {
     let path = path.into();
     mod_srcfiles(ModPath::new(path, ModType::ModRs))
 }
 
-pub fn mod_srcfiles(mod_path: ModPath) -> Result<Vec<SourceFileDesc>, SourcesAndErrors> {
+fn mod_srcfiles(mod_path: ModPath) -> Result<Vec<SourceFileDesc>, SourcesAndErrors> {
     let mut source_queue = Vec::with_capacity(100);
     let mut result = SourcesAndErrors::new(vec![]);
 

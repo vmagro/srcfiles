@@ -1,6 +1,6 @@
 use srcfiles;
 
-use srcfiles::{error::Error, SourceFileDesc};
+use srcfiles::{Error, SourceFileDesc};
 use std::path::PathBuf;
 
 fn assert_has_source(srcfiles: &[SourceFileDesc], path: &str) {

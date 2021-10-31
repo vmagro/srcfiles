@@ -1,9 +1,12 @@
 use crate::mod_path::ModStack;
 use std::path::PathBuf;
 
+/// Type of module paths
 #[derive(Debug, Clone, Copy)]
 pub enum ModType {
+    /// Module named "modname.rs"
     Adjacent,
+    /// Module named "modname/mod.rs"
     ModRs,
 }
 

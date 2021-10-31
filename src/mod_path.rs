@@ -4,9 +4,14 @@ use syn::{Attribute, Ident, ItemMod, Lit, Meta};
 use crate::error::Error;
 use crate::source_desc::{ModType, SourceFileDesc, SourceFileType};
 
+/// Path to a module.
+///
+/// This describes a path to a module, and what kind of path it is.
 #[derive(Debug, Clone)]
 pub struct ModPath {
+    /// Path itself
     pub path: PathBuf,
+    /// Type of module
     pub mod_type: ModType,
 }
 
