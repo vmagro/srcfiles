@@ -52,7 +52,8 @@ pub fn process_source(source: &SourceFileDesc) -> Result<(Vec<SourceFileDesc>, V
     Ok(visit_source(&source.path, source_finder)?)
 }
 
-pub fn crate_srcfiles(path: PathBuf) -> Result<Vec<SourceFileDesc>, SourcesAndErrors> {
+pub fn crate_srcfiles<P: Into<PathBuf>>(path: P) -> Result<Vec<SourceFileDesc>, SourcesAndErrors> {
+    let path = path.into();
     mod_srcfiles(ModPath::new(path, ModType::ModRs))
 }
 

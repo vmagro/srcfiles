@@ -15,7 +15,7 @@ fn main() {
         }
     };
 
-    match crate_srcfiles(filename.into()) {
+    match crate_srcfiles(filename) {
         Ok(srcfiles) => println!("{:?}", srcfiles),
         Err(srcfiles_with_errors) => println!("{}", srcfiles_with_errors),
     };
