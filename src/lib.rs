@@ -1,4 +1,4 @@
-//! Extract list of source files for Rust crate
+//! Extract list of source files for a Rust crate.
 //!
 //! This crate will attempt to generate a list of source files for a given Rust
 //! crate. It does not compile the crate, and so does not require any of the
