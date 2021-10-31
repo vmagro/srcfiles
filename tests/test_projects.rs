@@ -9,7 +9,8 @@ fn assert_has_source(srcfiles: &[SourceFileDesc], path: &str) {
             .iter()
             .any(|desc| desc.path.canonicalize().unwrap()
                 == PathBuf::from(path).canonicalize().unwrap()),
-        format!("No source with path {}", path)
+        "No source with path {}",
+        path
     );
 }
 
@@ -24,7 +25,8 @@ fn assert_missing_files(errors: &[(SourceFileDesc, Error)], path: &str) {
                 None
             })
             .any(|desc| desc.path == PathBuf::from(path)),
-        format!("No missing file with path {}", path)
+        "No missing file with path {}",
+        path
     );
 }
 
