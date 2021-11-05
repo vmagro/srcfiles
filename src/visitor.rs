@@ -1,7 +1,7 @@
+use quote::ToTokens;
 use std::path::PathBuf;
 use syn::{visit::Visit, ItemMod, LitStr, Macro};
 
-use crate::common::ToTokenString;
 use crate::error::Error;
 use crate::mod_path::{ModPath, ModSegment, ModStack};
 use crate::source_desc::{SourceFileDesc, SourceFileType};
@@ -97,8 +97,9 @@ impl<'ast> Visit<'ast> for SourceFinder {
                 .unwrap()
                 .join(path.value()),
             Err(_) => {
-                self.unresolved_items
-                    .push(Error::UnresolvedIncludeArg(node.to_token_string()));
+                self.unresolved_items.push(Error::UnresolvedIncludeArg(
+                    node.to_token_stream().to_string(),
+                ));
                 return;
             }
         };

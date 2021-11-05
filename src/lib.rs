@@ -22,7 +22,6 @@
 //! assert_eq!(srcfiles.len(), 7);
 //! ```
 
-mod common;
 mod error;
 mod mod_path;
 mod source_desc;
