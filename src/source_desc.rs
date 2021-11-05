@@ -10,11 +10,16 @@ pub enum ModType {
     ModRs,
 }
 
+/// Type of source file.
 #[derive(Debug, Clone)]
 pub enum SourceFileType {
+    /// Rust source module.
     RustSource(ModType),
+    /// Included Rust code (via `include!`).
     RustSnippet(ModStack),
+    /// Included bytes (via `include_bytes!`).
     Bytes,
+    /// Included string (via `include_str!`).
     String,
 }
 
