@@ -21,9 +21,9 @@ impl ModPath {
     }
 }
 
-impl Into<SourceFileDesc> for ModPath {
-    fn into(self) -> SourceFileDesc {
-        SourceFileDesc::new(self.path, SourceFileType::RustSource(self.mod_type), None)
+impl From<ModPath> for SourceFileDesc {
+    fn from(mp: ModPath) -> SourceFileDesc {
+        SourceFileDesc::new(mp.path, SourceFileType::RustSource(mp.mod_type), None)
     }
 }
 
@@ -49,7 +49,7 @@ impl ModStack {
 
     pub fn parent_file_path(&self) -> &Path {
         match self.0.first().expect("Using empty modstack") {
-            ModSegment::ModPath(ModPath { path, .. }) => &path,
+            ModSegment::ModPath(ModPath { path, .. }) => path,
             _ => panic!("Invalid ModStack structure"),
         }
     }

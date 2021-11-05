@@ -70,7 +70,7 @@ fn process_source(source: &SourceFileDesc) -> Result<(Vec<SourceFileDesc>, Vec<E
         }
     };
 
-    Ok(visit_source(&source.path, source_finder)?)
+    visit_source(&source.path, source_finder)
 }
 
 /// Generate list of sources for a crate
@@ -85,7 +85,7 @@ pub fn crate_srcfiles<P: Into<PathBuf>>(path: P) -> Result<Vec<SourceFileDesc>, 
 }
 
 fn mod_srcfiles(mod_path: ModPath) -> Result<Vec<SourceFileDesc>, SourcesAndErrors> {
-    let mut source_queue = Vec::with_capacity(100);
+    let mut source_queue = Vec::new();
     let mut result = SourcesAndErrors::new(vec![]);
 
     source_queue.push(SourceFileDesc::new(
