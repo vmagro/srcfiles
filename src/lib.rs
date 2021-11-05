@@ -28,8 +28,7 @@ mod mod_path;
 mod source_desc;
 mod visitor;
 
-use std::fs::File;
-use std::io::Read;
+use std::fs;
 use std::path::{Path, PathBuf};
 
 use syn::visit::Visit;
@@ -49,9 +48,7 @@ fn visit_source(
     path: &Path,
     mut source_finder: SourceFinder,
 ) -> Result<(Vec<SourceFileDesc>, Vec<Error>), Error> {
-    let mut file = File::open(&path)?;
-    let mut content = String::new();
-    file.read_to_string(&mut content)?;
+    let content = fs::read_to_string(&path)?;
     let ast = syn::parse_file(&content)?;
 
     source_finder.visit_file(&ast);
