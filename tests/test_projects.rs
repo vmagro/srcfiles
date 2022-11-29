@@ -82,3 +82,12 @@ fn inline_mods_test() {
     assert_has_source(&srcfiles, "test_projects/inline/src/a/c/d/mod.rs");
     assert_has_source(&srcfiles, "test_projects/inline/src/a/c/e/e/e.rs");
 }
+
+#[test]
+fn include_test() {
+    let srcfiles =
+        srcfiles::crate_srcfiles(PathBuf::from("test_projects/include/src/main.rs")).unwrap();
+    assert_eq!(srcfiles.len(), 2);
+    assert_has_source(&srcfiles, "test_projects/include/src/main.rs");
+    assert_has_source(&srcfiles, "test_projects/include/hello.txt");
+}
